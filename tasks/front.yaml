@@ -226,7 +226,7 @@
       - "helm upgrade --install --cleanup-on-fail --wait --timeout 30m0s \
                              grafana grafana/grafana \
                              --namespace=grafana \
-                             --version 6.30.0 \
+                             --version 6.32.7 \
                              --values /etc/grafana-values.yml"
   when: nginx_ingress.enabled
 
