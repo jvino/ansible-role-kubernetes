@@ -177,7 +177,7 @@
   failed_when: false
 
 - name: Check if prometheus is already installed
-  ansible.builtin.command: "helm list -a -n prometheus "
+  ansible.builtin.command: "helm list -a -n prometheus"
   register: prometheus_present
   failed_when: false
   changed_when: false
