@@ -179,7 +179,7 @@
       - helm repo update
       - "helm upgrade --install --cleanup-on-fail --wait --timeout 10m0s prometheus prometheus/prometheus -n prometheus \
         --create-namespace --version {{ prometheus_helm_version }} --values /etc/prometheus-values.yml"
-  when: nginx_ingress.enabled
+  when: nginx_ingress.enabled 
 
 - name: Install kube-eagle
   ansible.builtin.command: "{{ item }}"
