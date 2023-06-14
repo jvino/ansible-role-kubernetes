@@ -176,11 +176,20 @@
   changed_when: false
   failed_when: false
 
-- name: Check if prometheus is already installed
+- name: Check if prometheus is already installed command
   ansible.builtin.command: "helm list -a -n prometheus"
   register: prometheus_present
   failed_when: false
   changed_when: false
+
+- name: Log prometheus_present  
+  ansible.builtin.debug:
+    msg: "Prometheus: {{ prometheus_present.stdout }}"
+
+- name: Check if prometheus is already installed shell
+  ansible.builtin.shell: 
+    cmd: "helm list -a -n prometheus"
+  register: prometheus_present
 
 - name: Log prometheus_present  
   ansible.builtin.debug:
