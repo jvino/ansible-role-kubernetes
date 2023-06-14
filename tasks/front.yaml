@@ -184,7 +184,7 @@
 
 - name: Log prometheus_present  
   ansible.builtin.debug:
-    msg: "{{ prometheus_present.stdout }}"
+    msg: "Prometheus: {{ prometheus_present.stdout }}"
 
 - name: Upgrade/Install prometheus
   block:
