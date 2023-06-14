@@ -166,7 +166,27 @@
         -n kube-system --version {{ dashboard_helm_version }} --values /etc/dashboard-values.yml"
   when: nginx_ingress.enabled
 
-- name: install prometheus
+- name: Add and Update Prometheus repo [helm]
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - helm repo add prometheus https://prometheus-community.github.io/helm-charts
+    - helm repo update
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  changed_when: false
+  failed_when: false
+
+- name: Check if prometheus is present
+  ansible.builtin.command: "helm status prometheus -n prometheus | grep STATUS: | cut -d ' ' -f 2"
+  register: prometheus_present
+  failed_when: false
+  changed_when: false
+
+- name: Log prometheus_present  
+  ansible.builtin.debug:
+    msg: "{{ prometheus_present.stdout }}"
+
+- name: Upgrade/Install prometheus
   block:
   - template:
       src: templates/prometheus-values.yaml
@@ -175,11 +195,9 @@
     environment:
       KUBECONFIG: /etc/kubernetes/admin.conf
     with_items:
-      - helm repo add prometheus https://prometheus-community.github.io/helm-charts
-      - helm repo update
       - "helm upgrade --install --cleanup-on-fail --wait --timeout 10m0s prometheus prometheus/prometheus -n prometheus \
         --create-namespace --version {{ prometheus_helm_version }} --values /etc/prometheus-values.yml"
-  when: nginx_ingress.enabled 
+  when: (nginx_ingress.enabled) and ('deployed' not in prometheus_already_present.stdout)
 
 - name: Install kube-eagle
   ansible.builtin.command: "{{ item }}"
