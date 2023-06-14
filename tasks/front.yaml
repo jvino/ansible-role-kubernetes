@@ -177,7 +177,7 @@
   failed_when: false
 
 - name: Check if prometheus is present
-  ansible.builtin.command: "helm status prometheus -n prometheus | grep STATUS: | cut -d ' ' -f 2"
+  ansible.builtin.command: "helm status prometheus -n prometheus | grep STATUS: "
   register: prometheus_present
   failed_when: false
   changed_when: false
