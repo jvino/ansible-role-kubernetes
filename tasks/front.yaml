@@ -179,6 +179,8 @@
 - name: Check if prometheus is already installed command
   ansible.builtin.command: "helm list -a -n prometheus"
   register: prometheus_present
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
   failed_when: false
   changed_when: false
 
@@ -189,6 +191,8 @@
 - name: Check if prometheus is already installed shell
   ansible.builtin.shell: 
     cmd: "helm list -a -n prometheus"
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
   register: prometheus_present
 
 - name: Log prometheus_present  
