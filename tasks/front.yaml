@@ -19,6 +19,18 @@
     host: "{{ kube_api_server }}"
     port: 6443
 
+- name: Check if there are some nodes in NotReady status, if so delete them
+  ansible.builtin.command: "kubectl get nodes | grep NotReady | awk '{print $1}' | xargs kubectl delete node {}"
+  register: output_node_deletion
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  failed_when: false
+  changed_when: false
+
+- name: Log NotReady Node Deletions
+  ansible.builtin.debug:
+    msg: "Node Deletion: {{ output_node_deletion.stdout }}"
+
 - name: install flannel
   block:
   - template:
