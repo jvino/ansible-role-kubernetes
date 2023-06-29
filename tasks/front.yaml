@@ -20,7 +20,7 @@
     port: 6443
 
 - name: Get nodes
-  ansible.builtin.command: "kubectl get nodes"
+  ansible.builtin.shell: "kubectl get nodes"
   register: output_node_removal
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
@@ -32,7 +32,7 @@
     msg: "get Nodes: {{ output_node_removal.stdout }}"
 
 - name: get NotReady nodes
-  ansible.builtin.command: "kubectl get nodes | grep NotReady | awk '{print $1}'"
+  ansible.builtin.shell: "kubectl get nodes | grep NotReady | awk '{print $1}'"
   register: output_node_removal
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
@@ -44,7 +44,7 @@
     msg: "get notready nodes: {{ output_node_removal.stdout }}"
 
 - name: Check if there are some nodes in NotReady status, if so remove them
-  ansible.builtin.command: "kubectl get nodes | grep NotReady | awk '{print $1}' | xargs kubectl delete node {}"
+  ansible.builtin.shell: "kubectl get nodes | grep NotReady | awk '{print $1}' | xargs kubectl delete node {}"
   register: output_node_removal
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
