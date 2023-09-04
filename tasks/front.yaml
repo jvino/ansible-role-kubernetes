@@ -102,43 +102,7 @@
     host: "{{ kube_api_server }}"
     port: 6443
 
-- name: Get nodes
-  ansible.builtin.shell: "kubectl get nodes"
-  register: output_get_nodes
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  failed_when: false
-  changed_when: false
-
-- name: Print get node
-  ansible.builtin.debug:
-    msg: "get Nodes: {{ output_get_nodes.stdout }}"
-
-- name: get NotReady nodes
-  ansible.builtin.shell: "kubectl get nodes | grep NotReady | awk '{print $1}'"
-  register: output_get_notready_nodes
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  failed_when: false
-  changed_when: false
-
-- name: Print get notready nodes
-  ansible.builtin.debug:
-    msg: "get notready nodes: {{ output_get_notready_nodes.stdout }}"
-
-- name: get NotReady nodes no vnode-0
-  ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}'"
-  register: output_get_notready_nodes_no_v0
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  failed_when: false
-  changed_when: false
-
-- name: Print get notready nodes
-  ansible.builtin.debug:
-    msg: "get notready nodes: {{ output_get_notready_nodes_no_v0.stdout }}"
-
-- name: Check if there are some nodes in NotReady status no v0, if so remove them
+- name: Remove NotReady nodes
   ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}' | xargs kubectl delete node {}"
   register: output_node_removal
   environment:
@@ -146,7 +110,7 @@
   failed_when: false
   changed_when: false
 
-- name: Log NotReady Node Removal
+- name: Output of NotReady node Removal
   ansible.builtin.debug:
     msg: "Node Deletion: {{ output_node_removal.stdout }}"
 
@@ -236,19 +200,7 @@
   changed_when: false
   failed_when: false
 
-- name: Check if prometheus is already installed command
-  ansible.builtin.command: "helm list -a -n prometheus"
-  register: prometheus_present
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  failed_when: false
-  changed_when: false
-
-- name: Log prometheus_present  
-  ansible.builtin.debug:
-    msg: "Prometheus: {{ prometheus_present.stdout }}"
-
-- name: Check if prometheus is already installed shell
+- name: Check if prometheus is already installed 
   ansible.builtin.shell: 
     cmd: "helm list -a -n prometheus"
   environment:
