@@ -129,18 +129,6 @@
         -n ingress-nginx --create-namespace --version {{ nginx_ingress_helm_version }} --values /etc/nginx-ingress-values.yml"
   when: nginx_ingress.enabled
 
-- name: Log cluster_issuer_name
-  ansible.builtin.debug:
-    msg: "cluster_issuer_name: {{ cluster_issuer_name }}"
-
-- name: Log acme_server_url
-  ansible.builtin.debug:
-    msg: "acme_server_url: {{ acme_server_url }}"
-
-- name: Log acme_email
-  ansible.builtin.debug:
-    msg: "acme_email: {{ acme_email }}"
-
 - name: install cert manager
   command: "{{ item }}"
   environment:
