@@ -195,10 +195,6 @@
     KUBECONFIG: /etc/kubernetes/admin.conf
   register: prometheus_present
 
-- name: Log prometheus_present  
-  ansible.builtin.debug:
-    msg: "Prometheus: {{ prometheus_present.stdout }}"
-
 - name: Upgrade/Install prometheus
   block:
   - template:
