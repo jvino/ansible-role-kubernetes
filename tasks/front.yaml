@@ -102,13 +102,13 @@
     host: "{{ kube_api_server }}"
     port: 6443
 
-- name: Remove NotReady nodes
-  ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}' | xargs kubectl delete node {}"
-  register: output_node_removal
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  failed_when: false
-  changed_when: false
+#- name: Remove NotReady nodes
+#  ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}' | xargs kubectl delete node {}"
+#  register: output_node_removal
+#  environment:
+#    KUBECONFIG: /etc/kubernetes/admin.conf
+#  failed_when: false
+#  changed_when: false
 
 - name: Output of NotReady node Removal
   ansible.builtin.debug:
