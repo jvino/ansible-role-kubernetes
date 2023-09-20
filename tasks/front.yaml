@@ -127,6 +127,8 @@
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   register: output_cordon
+  environment:
+      KUBECONFIG: /etc/kubernetes/admin.conf
   when: notready_nodes.stdout | length > 0
 
 - name: Output cordon nodes
@@ -138,6 +140,8 @@
   ansible.builtin.shell: "kubectl drain {{ item }} --ignore-daemonsets --force"
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
+  environment:
+      KUBECONFIG: /etc/kubernetes/admin.conf
   register: output_drain
   when: notready_nodes.stdout | length > 0
 
@@ -151,6 +155,8 @@
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   register: output_drain
+  environment:
+      KUBECONFIG: /etc/kubernetes/admin.conf
   when: notready_nodes.stdout | length > 0
 
 - name: Output drain nodes
