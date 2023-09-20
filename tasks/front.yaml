@@ -133,7 +133,7 @@
     msg: "Cordon nodes: {{ output_cordon.stdout }}"
 
 - name: Drain nodes
-  ansible.builtin.shell: "kubectl drain {{ item }} "
+  ansible.builtin.shell: "kubectl drain {{ item }} --force"
   loop:
     "{{ notready_nodes.stdout | split('\n') }}"
   register: output_drain
