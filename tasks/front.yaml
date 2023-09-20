@@ -127,30 +127,36 @@
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   register: output_cordon
+  when: notready_nodes.stdout | length > 0
 
 - name: Output cordon nodes
   ansible.builtin.debug:
     msg: "Cordon nodes: {{ output_cordon.stdout }}"
+  when: notready_nodes.stdout | length > 0
 
 - name: Drain nodes
-  ansible.builtin.shell: "kubectl drain {{ item }} --force"
+  ansible.builtin.shell: "kubectl drain {{ item }} --ignore-daemonsets --force"
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   register: output_drain
+  when: notready_nodes.stdout | length > 0
 
 - name: Output drain nodes
   ansible.builtin.debug:
     msg: "Drain nodes: {{ output_drain.stdout }}"
+  when: notready_nodes.stdout | length > 0
 
 - name: Delete nodes
   ansible.builtin.shell: "kubectl delete node {{ item }} "
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   register: output_drain
+  when: notready_nodes.stdout | length > 0
 
 - name: Output drain nodes
   ansible.builtin.debug:
     msg: "Drain nodes: {{ output_drain.stdout }}"
+  when: notready_nodes.stdout | length > 0
 
 - name: install nginx ingress
   block:
