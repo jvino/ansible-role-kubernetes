@@ -125,7 +125,7 @@
 - name: Cordon nodes
   ansible.builtin.shell: "kubectl cordon {{ item }} "
   loop:
-    "{{ notready_nodes.stdout | split('\n') }}"
+    "{{ notready_nodes.stdout.split('\n') }}"
   register: output_cordon
 
 - name: Output cordon nodes
@@ -135,7 +135,7 @@
 - name: Drain nodes
   ansible.builtin.shell: "kubectl drain {{ item }} --force"
   loop:
-    "{{ notready_nodes.stdout | split('\n') }}"
+    "{{ notready_nodes.stdout.split('\n') }}"
   register: output_drain
 
 - name: Output drain nodes
@@ -145,7 +145,7 @@
 - name: Delete nodes
   ansible.builtin.shell: "kubectl delete node {{ item }} "
   loop:
-    "{{ notready_nodes.stdout | split('\n') }}"
+    "{{ notready_nodes.stdout.split('\n') }}"
   register: output_drain
 
 - name: Output drain nodes
