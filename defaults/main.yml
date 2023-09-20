@@ -1,5 +1,5 @@
 # Version to install or latest
-kube_version: 1.24.12
+kube_version: 1.28.1
 # Type of node front or wn
 kube_type_of_node: front
 # IP address or name of the Kube front node
@@ -17,8 +17,6 @@ kubelet_extra_args: ''
 # Kube API server options
 kube_apiserver_options: []
 #  - {option: "--service-node-port-range", value: "80-32767"}
-# Flag to set HELM to be installed
-kube_install_helm: true
 nginx_ingress:
   enabled: true
   master_private_ip: 0.0.0.0
@@ -38,17 +36,17 @@ kube_flanneld_extra_args: []
 node_name: AUTO
 nodelabel: ''
 
-helm_version: v3.11.1
-nginx_ingress_helm_version: 4.5.2
-cert_manager_helm_version: v1.10.0
+kube_install_helm: true
+helm_version: v3.12.3
+nginx_ingress_helm_version: 4.7.2
+cert_manager_helm_version: v1.12.4
 cert_manager_type: letsencrypt-prod # [self-signed, letsencrypt-staging, letsencrypt-prod]
 cert_manager_email: '' # used only for letsencrypt 
-dashboard_helm_version: 6.0.0
-prometheus_helm_version: 19.7.2
+dashboard_helm_version: 6.0.8
+prometheus_helm_version: 24.3.0
 kube_eagle_helm_version: 2.0.0
-
-grafana_helm_version: 6.52.9
-calico_version: v3.24
+grafana_helm_version: 6.59.4
+calico_version: v3.25
 
 # Properties related to GPU support
 enable_gpu: false

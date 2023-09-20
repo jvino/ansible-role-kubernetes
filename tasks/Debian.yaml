@@ -9,13 +9,15 @@
 
 - name: Add repo key
   apt_key:
-    url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    # The same signing key is used for all repositories, so you can disregard the version in the URL
+    url: https://pkgs.k8s.io/core:/stable:/{{ kube_repo_version }}/deb/Release.key
+    keyring: /etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg
     state: present
 
 - name: Add kubernetes repo
   apt_repository:
-    # TODO Xenial is Ubuntu 16
-    repo:  'deb http://apt.kubernetes.io/ kubernetes-xenial main'
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/{{ kube_repo_version }}/deb/ /"
+    filename: kubernetes
     state: present
     update_cache: yes
 
