@@ -137,7 +137,7 @@
   when: notready_nodes.stdout | length > 0
 
 - name: Drain nodes
-  ansible.builtin.shell: "kubectl drain {{ item }} --ignore-daemonsets --force"
+  ansible.builtin.shell: "kubectl drain {{ item }} --delete-emptydir-data --ignore-daemonsets --force"
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
   environment:
