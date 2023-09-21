@@ -102,14 +102,6 @@
     host: "{{ kube_api_server }}"
     port: 6443
 
-#- name: Remove NotReady nodes
-#  ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}' | xargs kubectl delete node {}"
-#  register: output_node_removal
-#  environment:
-#    KUBECONFIG: /etc/kubernetes/admin.conf
-#  failed_when: false
-#  changed_when: false
-
 - name: Collect NotReady nodes
   ansible.builtin.shell: "kubectl get nodes | grep NotReady | grep -v vnode-0 | awk '{print $1}'"
   register: notready_nodes
@@ -136,19 +128,19 @@
     msg: "Cordon nodes: {{ output_cordon }}"
   when: notready_nodes.stdout | length > 0
 
-- name: Drain nodes
-  ansible.builtin.shell: "kubectl drain {{ item }} --delete-emptydir-data --ignore-daemonsets --force"
-  loop:
-    "{{ notready_nodes.stdout.split('\n') }}"
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
-  register: output_drain
-  when: notready_nodes.stdout | length > 0
+#- name: Drain nodes
+#  ansible.builtin.shell: "kubectl drain {{ item }} --delete-emptydir-data --ignore-daemonsets --force"
+#  loop:
+#    "{{ notready_nodes.stdout.split('\n') }}"
+#  environment:
+#    KUBECONFIG: /etc/kubernetes/admin.conf
+#  register: output_drain
+#  when: notready_nodes.stdout | length > 0
 
-- name: Output drain nodes
-  ansible.builtin.debug:
-    msg: "Drain nodes: {{ output_drain }}"
-  when: notready_nodes.stdout | length > 0
+#- name: Output drain nodes
+#  ansible.builtin.debug:
+#    msg: "Drain nodes: {{ output_drain }}"
+#  when: notready_nodes.stdout | length > 0
 
 - name: Delete nodes
   ansible.builtin.shell: "kubectl delete node {{ item }} "
