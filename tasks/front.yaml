@@ -125,7 +125,7 @@
 
 - name: Output cordon nodes
   ansible.builtin.debug:
-    msg: "Cordon nodes: {{ output_cordon }}"
+    msg: "Cordoned nodes: {{ output_cordon }}"
   when: notready_nodes.stdout | length > 0
 
 #- name: Drain nodes
@@ -142,7 +142,7 @@
 #    msg: "Drain nodes: {{ output_drain }}"
 #  when: notready_nodes.stdout | length > 0
 
-- name: Delete nodes
+- name: Delete NotReady nodes
   ansible.builtin.shell: "kubectl delete node {{ item }} "
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
@@ -151,9 +151,9 @@
     KUBECONFIG: /etc/kubernetes/admin.conf
   when: notready_nodes.stdout | length > 0
 
-- name: Output delete nodes
+- name: Output node deletion
   ansible.builtin.debug:
-    msg: "Drain nodes: {{ output_delete }}"
+    msg: "Deleted nodes: {{ output_delete }}"
   when: notready_nodes.stdout | length > 0
 
 - name: Check if ingress-nginx is already installed
