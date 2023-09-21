@@ -133,7 +133,7 @@
 
 - name: Output cordon nodes
   ansible.builtin.debug:
-    msg: "Cordon nodes: {{ output_cordon.stdout }}"
+    msg: "Cordon nodes: {{ output_cordon }}"
   when: notready_nodes.stdout | length > 0
 
 - name: Drain nodes
@@ -147,21 +147,21 @@
 
 - name: Output drain nodes
   ansible.builtin.debug:
-    msg: "Drain nodes: {{ output_drain.stdout }}"
+    msg: "Drain nodes: {{ output_drain }}"
   when: notready_nodes.stdout | length > 0
 
 - name: Delete nodes
   ansible.builtin.shell: "kubectl delete node {{ item }} "
   loop:
     "{{ notready_nodes.stdout.split('\n') }}"
-  register: output_drain
+  register: output_delete
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
   when: notready_nodes.stdout | length > 0
 
-- name: Output drain nodes
+- name: Output delete nodes
   ansible.builtin.debug:
-    msg: "Drain nodes: {{ output_drain.stdout }}"
+    msg: "Drain nodes: {{ output_delete }}"
   when: notready_nodes.stdout | length > 0
 
 - name: install nginx ingress
